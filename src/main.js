@@ -3,7 +3,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
 import routes from './router'
-import store from './store'
+import microStore from './store'
 import actions from '@/shared/actions'
 
 Vue.config.productionTip = false
@@ -13,7 +13,7 @@ let instance = null
 function render (props = {}) {
   console.log('micro-app-test-vue')
   console.log(props)
-  const { container } = props
+  const { container, store = microStore } = props
 
   if (props) {
     // 注入 actions 实例

@@ -15,6 +15,14 @@ export default {
   components: {
     HelloWorld
   },
+  data () {
+    return {}
+  },
+  computed: {
+    token () {
+      return this.$store.state.token
+    }
+  },
   mounted () {
     console.log('11111111', window.__POWERED_BY_QIANKUN__)
     if (window.__POWERED_BY_QIANKUN__) {
@@ -38,6 +46,11 @@ export default {
         actions.setGlobalState({ token })
       }, 5000)
     }
+
+    setTimeout(() => {
+      console.log(this.token)
+      this.$store.commit('setToken', 'setToken125')
+    }, 5000)
   }
 }
 </script>
