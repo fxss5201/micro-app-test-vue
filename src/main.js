@@ -5,6 +5,7 @@ import App from './App.vue'
 import routes from './router'
 import microStore from './store'
 import actions from '@/shared/actions'
+import './plugins/element.js'
 
 Vue.config.productionTip = false
 
