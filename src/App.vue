@@ -28,15 +28,21 @@ export default {
   name: 'app',
   data () {
     return {
-      actionToken: ''
-    }
-  },
-  computed: {
-    vuexToken () {
-      return this.$store.state.token
+      actionToken: '',
+      vuexToken: ''
     }
   },
   mounted () {
+    /**
+      由于在 main.js 中 const { container, store = microStore } = props
+      store 如果独立运行用的是自己的Store，如果作为子应用运行，则用的是主应用的Store，此时主应用的Store在子应用中
+      不是动态的，所以只能初始化赋值，再订阅主应用Store的mutation来修改当前数据
+
+      为了统一处理，可能都需要通过初始化赋值，再订阅主应用Store的mutation来修改当前数据的方式
+    */
+    // 初始化拿到值
+    this.vuexToken = this.$store.state.token
+
     console.log(this.$store)
     console.log('window.__POWERED_BY_QIANKUN__', window.__POWERED_BY_QIANKUN__)
     if (window.__POWERED_BY_QIANKUN__) {
@@ -49,10 +55,21 @@ export default {
         this.actionToken = token
       }, true)
     }
+
+    // 订阅 store 的 mutation
+    this.$store.subscribe((mutation, state) => {
+      console.log(mutation.type)
+      console.log(mutation.payload)
+      console.log(state)
+      console.log(this.$store)
+      this.vuexToken = state.token
+    })
   },
   methods: {
     setMicroActionToken () {
-      actions.setGlobalState({ token: 'microActionToken' })
+      if (window.__POWERED_BY_QIANKUN__) {
+        actions.setGlobalState({ token: 'microActionToken' })
+      }
     },
 
     setMicroVuexToken () {
