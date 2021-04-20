@@ -24,6 +24,8 @@
 
 <script>
 import actions from '@/shared/actions'
+import busOn from './plugins/busOn'
+
 export default {
   name: 'app',
   data () {
@@ -49,9 +51,12 @@ export default {
       }, true)
     }
 
-    this.$bus.$on('setBusToken', (val) => {
-      this.$store.commit('tokenModule/setToken', val)
-    })
+    // this.$bus.$on('setBusToken', (val) => {
+    //   this.$store.commit('tokenModule/setToken', val)
+    // })
+
+    // 多个eventBus统一书写地方
+    busOn.install(this)
   },
   methods: {
     setMicroActionToken () {
