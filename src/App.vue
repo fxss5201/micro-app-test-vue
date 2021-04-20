@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     busToken () {
-      return this.$store.state.token
+      return this.$store.state.tokenModule.token
     }
   },
   mounted () {
@@ -50,7 +50,7 @@ export default {
     }
 
     this.$bus.$on('setBusToken', (val) => {
-      this.$store.commit('setToken', val)
+      this.$store.commit('tokenModule/setToken', val)
     })
   },
   methods: {
@@ -62,7 +62,7 @@ export default {
 
     setMicroBusToken () {
       // 防止多次commit setToken，所以将commit setToken放在eventBus中去做，此处仅emit eventBus
-      // this.$store.commit('setToken', 'microBusToken')
+      // this.$store.commit('tokenModule/setToken', 'microBusToken')
       this.$bus.$emit('setBusToken', 'microBusToken')
     }
   },
