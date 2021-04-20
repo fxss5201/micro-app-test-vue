@@ -61,7 +61,8 @@ export default {
     },
 
     setMicroBusToken () {
-      this.$store.commit('setToken', 'microBusToken')
+      // 防止多次commit setToken，所以将commit setToken放在eventBus中去做，此处仅emit eventBus
+      // this.$store.commit('setToken', 'microBusToken')
       this.$bus.$emit('setBusToken', 'microBusToken')
     }
   },
