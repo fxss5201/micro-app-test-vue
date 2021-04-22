@@ -57,6 +57,10 @@ export default {
 
     // 多个eventBus统一书写地方
     busOn.install(this)
+    if (window.__POWERED_BY_QIANKUN__) {
+      // 嵌入父应用中进入页面的时候初始化数据
+      this.$bus.$emit('setBusToken', this.$bus.token)
+    }
   },
   methods: {
     setMicroActionToken () {
