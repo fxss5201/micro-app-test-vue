@@ -6,7 +6,6 @@ import routes from './router'
 import store from './store'
 import actions from '@/shared/actions'
 import './plugins/element.js'
-import microBus from './plugins/bus'
 
 Vue.config.productionTip = false
 
@@ -15,8 +14,7 @@ let instance = null
 function render (props = {}) {
   console.log('micro-app-test-vue')
   console.log(props)
-  const { container, bus = microBus } = props
-  Vue.prototype.$bus = bus
+  const { container } = props
 
   if (props) {
     // 注入 actions 实例

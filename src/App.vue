@@ -9,11 +9,11 @@
         <el-button size="mini" @click="setMicroActionToken">设置actionToken为microActionToken</el-button>
       </div>
       <div class="content">
-        <span>子应用Props(bus)通信:</span>
+        <span>子应用Action + Vuex通信:</span>
         <el-divider direction="vertical"></el-divider>
-        <span>busToken: {{ busToken }}</span>
+        <span>actionVuexToken: {{ actionVuexToken }}</span>
         <el-divider direction="vertical"></el-divider>
-        <el-button size="mini" @click="setMicroBusToken">设置busToken为microBusToken</el-button>
+        <el-button size="mini" @click="setMicroActionVuexToken">设置actionVuexToken为microActionVuexToken</el-button>
       </div>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
@@ -24,7 +24,6 @@
 
 <script>
 import actions from '@/shared/actions'
-import busOn from './plugins/busOn'
 
 export default {
   name: 'app',
@@ -34,7 +33,7 @@ export default {
     }
   },
   computed: {
-    busToken () {
+    actionVuexToken () {
       return this.$store.state.tokenModule.token
     }
   },
@@ -48,18 +47,8 @@ export default {
 
         const { token } = state
         this.actionToken = token
+        this.$store.commit('tokenModule/setToken', token)
       }, true)
-    }
-
-    // this.$bus.$on('setBusToken', (val) => {
-    //   this.$store.commit('tokenModule/setToken', val)
-    // })
-
-    // 多个eventBus统一书写地方
-    busOn.install(this)
-    if (window.__POWERED_BY_QIANKUN__) {
-      // 嵌入父应用中进入页面的时候初始化数据
-      this.$bus.$emit('setBusToken', this.$bus.token)
     }
   },
   methods: {
@@ -69,14 +58,16 @@ export default {
       }
     },
 
-    setMicroBusToken () {
-      // 防止多次commit setToken，所以将commit setToken放在eventBus中去做，此处仅emit eventBus
-      // this.$store.commit('tokenModule/setToken', 'microBusToken')
-      this.$bus.$emit('setBusToken', 'microBusToken')
+    setMicroActionVuexToken () {
+      if (window.__POWERED_BY_QIANKUN__) {
+        actions.setGlobalState({ token: 'microActionVuexToken' })
+      } else {
+        this.$store.commit('tokenModule/setToken', 'microActionVuexToken')
+      }
     }
   },
   watch: {
-    busToken (val, oldVal) {
+    actionVuexToken (val, oldVal) {
       console.log('子应用vuex中token值改变前的值为 ', oldVal)
       console.log('子应用vuex中token值改变后的值为 ', val)
     }
